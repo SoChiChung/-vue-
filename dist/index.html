@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- 这是引用物理磁盘的bundle -->
+    <!-- <script src="../dist/bundle.js"></script> -->
+    <!-- 这是引用server的bundle，可以实现动态刷新 -->
+    <script src="/bundle.js"></script>
+    <!-- <link rel="stylesheet" href="../src/css/index.css"> -->
+    <!-- 为什么物理磁盘的bundle和server的bundle会不一样 
+        是因为webpack-dev-server帮我们打包生成的bundlejs没有存放在实际的物理磁盘上 
+        而是直接托管到电脑内存之中 这么做的原因是为了一个字——快 -->
+</head>
+
+<body>
+   <div id="bg">
+    <ul>
+        <li>这是第1个li</li>
+        <li>这是第2个li</li>
+        <li>这是第3个li</li>
+        <li>这是第4个li</li>
+        <li>这是第5个li</li>
+        <li>这是第6个li</li>
+        <li>这是第7个li</li>
+        <li>这是第8个li</li>
+        <li>这是第9个li</li>
+        <li>这是第10个li</li>
+    </ul>
+   </div>
+   <span class="glyphicon glyphicon-search" aria-hidden="true"> </span>
+<script type="text/javascript" src="bundle.js"></script></body>
+
+</html>

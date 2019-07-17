@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>首页</title>
+    <!-- 这是引用物理磁盘的bundle -->
+    <!-- <script src="../dist/bundle.js"></script> -->
+    <!-- 这是引用server的bundle，可以实现动态刷新 -->
+    <!-- <script src="/bundle.js"></script> -->
+    <!-- <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css">     -->
+    <!-- <link rel="stylesheet" href="../src/css/index.css"> -->
+    <!-- 为什么物理磁盘的bundle和server的bundle会不一样 
+        是因为webpack-dev-server帮我们打包生成的bundlejs没有存放在实际的物理磁盘上 
+        而是直接托管到电脑内存之中 这么做的原因是为了一个字——快 -->
+    <!-- <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+    <style>
+        html body {
+            height: 100%
+        }
+    </style>
+</head>
+
+<body style="background-color: white">
+    <div id="app">
+
+    </div>
+</body>
+
+</html>
