@@ -78,7 +78,8 @@ module.exports = {
                 test: /\.(ttf|woff|woff2|eot|svg|otf)$/, use: ['url-loader']
 
             },
-            { test: /\.vue$/, use: [{ loader: 'vue-loader' }] }
+            { test: /\.vue$/, use: [{ loader: 'vue-loader' }] },
+            { test: /\.scss$/, use: ['style-loader', 'css-loader', 'sass-loader'] }, // 处理 scss 文件的 loader
 
         ]
     }

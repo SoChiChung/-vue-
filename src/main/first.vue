@@ -3,15 +3,13 @@
 <template>
   <div>
     <!-- 轮播图 -->
-    <div class="swipe">
-      <!-- <mt-swipe :auto="4000">
+
+    <!-- <mt-swipe :auto="4000">
       <mt-swipe-item><img src="../images/1.jpg" alt="" width="500" height="300"></mt-swipe-item>
       <mt-swipe-item><img src="../images/2.jpg" alt="" width="500" height="300"></mt-swipe-item>
       <mt-swipe-item><img src="../images/3.jpg" alt="" width="500" height="300"></mt-swipe-item>
-      </mt-swipe>-->
-
-      <mt-swipe :auto="4000">
-        <!-- <mt-swipe-item>
+    </mt-swipe>-->
+    <!-- <mt-swipe-item>
         <img src="../images/1.jpg" alt width="500" height="300" />
       </mt-swipe-item>
       <mt-swipe-item>
@@ -19,7 +17,9 @@
       </mt-swipe-item>
       <mt-swipe-item>
         <img src="../images/3.jpg" alt width="500" height="300" />
-        </mt-swipe-item>-->
+    </mt-swipe-item>-->
+    <div class="swipe">
+      <mt-swipe :auto="4000">
         <mt-swipe-item v-for="item in swipeList" :key="item.id">
           <a :href="item.url">
             <img :src="item.img" alt />
@@ -137,12 +137,11 @@ export default {
     getData() {
       //获取数据列表的方法
       this.$http
-        .get("http://www.liulongbin.top:3005/api/getlunbo")
+        .get("http://www.liulongbin.top:3005/api/getlunbo" )
         .then(result => {
-          var result = result.body;
-          console.log("result:");
-          console.log(result);
-          this.swipeList = result.message;
+          if(result.body.status === 0){
+            this.swipeList=result.body.message;
+          }
         });
     }
   }

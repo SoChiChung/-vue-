@@ -19,26 +19,44 @@
     </div>-->
 
     <!-- swiper -->
+    <div class="mui-card">
+      <div class="mui-card-content">
+        <div class="mui-card-content-inner">
+          <swiper :swipeList="swipeList" :isfull="false"></swiper>
+        </div>
+      </div>
+    </div>
 
+    <!--  <mt-swipe :auto="4000">
+        <mt-swipe-item v-for="item in swipeList" :key="item.id">
+          <a :href="item.url">
+            <img :src="item.img" alt />
+          </a>
+        </mt-swipe-item>
+    </mt-swipe>-->
     <!-- 添加进购物车 -->
     <div class="mui-card">
       <div class="mui-card-header">
         <h2>{{goods.title}}</h2>
       </div>
-      <div class="mui-card-content">
+      <div class="mui-card-content buy">
         <div>
+          销售价：
+          <span class="sell-price">￥{{goods.sell_price}}</span>
           市场价：
           <span class="market-price">{{goods.market_price}}</span>
-          销售价：
-          <span class="sell-price">{{goods.sell_price}}</span>
         </div>
-        <div class="mui-numbox">
+        <div class="mui-numbox" data-numbox-min="0" data-numbox-step="1">
           <!-- "-"按钮，点击可减小当前数值 -->
-          <button class="mui-btn mui-numbox-btn-minus" type="button">-</button>
-          <input class="mui-numbox-input" type="number" />
+          <button class="mui-btn mui-numbox-btn-minus" @click="count>0?count--:''">-</button>
+          <input class="mui-numbox-input" type="number" v-model="count" />
           <!-- "+"按钮，点击可增大当前数值 -->
-          <button class="mui-btn mui-numbox-btn-plus" type="button">+</button>
+          <button
+            class="mui-btn mui-numbox-btn-plus"
+            @click="count<goods.stock_quantity?count++:''"
+          >+</button>
         </div>
+        <button class="mui-btn-primary">加入购物车</button>
       </div>
     </div>
 
@@ -54,6 +72,16 @@
         </div>
       </div>
     </div>
+    <div class="mui-card">
+      <div class="mui-card-header">
+        <h2>商品详情</h2>
+      </div>
+      <div class="mui-card-content">
+        <div class="mui-card-content-inner">
+          <goodsinfo></goodsinfo>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <style>
@@ -62,18 +90,37 @@ h2 {
   line-height: 1.5em;
   letter-spacing: 0.1em;
 }
+.market-price {
+  text-decoration: line-through;
+  padding: 0 1% 0 2%;
+}
+.sell-price {
+  font-weight: bolder;
+  color: red;
+  font-size: 200%;
+  padding: 0 1% 0 0;
+}
+.buy {
+  padding: 3%;
+}
 </style>
 
 <script>
+import swiper from "../subcomponents/swiper.vue";
+import goodsinfo from "./goodsinfo.vue";
+import { Toast } from "mint-ui";
 export default {
   data() {
     return {
       id: this.$route.params.id,
-      goods: []
+      goods: [],
+      count: 0,
+      swipeList: []
     };
   },
   created() {
     this.getGoods();
+    this.getGoodsInfo();
   },
   methods: {
     /* 获取商品参数区的价格 标题 */
@@ -82,11 +129,30 @@ export default {
         .get("http://www.liulongbin.top:3005/api/goods/getinfo/" + this.id)
         .then(result => {
           if (result.body.status == 0) {
-            console.log(result.body.message);
             this.goods = result.body.message[0];
-          } else alert("获取商品信息失败！");
+          } else
+            Toast("获取商品信息失败！ 错误代码：" + result.body.status == 0);
+        });
+    },
+    getGoodsInfo() {
+      this.$http
+        .get("http://www.liulongbin.top:3005/api/getthumimages/" + this.id)
+        .then(result => {
+          if (result.body.status == 0) {
+            result.body.message.forEach(item => {
+              if (item.src) item.img = item.src;
+            });
+            console.log(result.body.message);
+            this.swipeList = result.body.message;
+          } else
+            Toast("获取商品轮播图片失败！错误代码：" + result.body.status == 0);
+          console.log(this.swipeList);
         });
     }
+  },
+  components: {
+    swiper,
+    goodsinfo
   }
 };
 </script>
