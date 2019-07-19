@@ -1,6 +1,14 @@
 <template>
   <!-- 商品购买页面 -->
   <div>
+    <!-- 小球动画 -->
+        <transition
+          @before-enter="ballBeforeEnter"
+          @enter="ballEnter"
+          @after-enter="ballAfterEnter"
+        >
+          <div class="ball" v-show="showball"></div>
+        </transition>
     <!--     <div class="mui-card">
       <div
         class="mui-card-header mui-card-media"
@@ -56,7 +64,8 @@
             @click="count<goods.stock_quantity?count++:''"
           >+</button>
         </div>
-        <button class="mui-btn-primary">加入购物车</button>
+        <button class="mui-btn-primary" @click="showball=!showball">加入购物车</button>
+        
       </div>
     </div>
 
@@ -72,6 +81,8 @@
         </div>
       </div>
     </div>
+
+    <!-- 商品详细信息 -->
     <div class="mui-card">
       <div class="mui-card-header">
         <h2>商品详情</h2>
@@ -103,19 +114,29 @@ h2 {
 .buy {
   padding: 3%;
 }
+.ball {
+  background-color: red;
+  border-radius: 50%;
+  width: 1rem;
+  height: 1rem;
+  position: absolute;
+  z-index:99;
+}
 </style>
 
 <script>
 import swiper from "../subcomponents/swiper.vue";
 import goodsinfo from "./goodsinfo.vue";
 import { Toast } from "mint-ui";
+import { Transform } from "stream";
 export default {
   data() {
     return {
       id: this.$route.params.id,
       goods: [],
       count: 0,
-      swipeList: []
+      swipeList: [],
+      showball: false
     };
   },
   created() {
@@ -148,7 +169,23 @@ export default {
             Toast("获取商品轮播图片失败！错误代码：" + result.body.status == 0);
           console.log(this.swipeList);
         });
-    }
+    },
+    /* 小球动画  */
+    ballBeforeEnter(el) {
+      // ...
+        el.style.transform="translate(80px, 390px)";
+    },
+    ballEnter(el,done) {
+      // ...
+                el.offsetWidth;
+                el.style.transform= "translate(250px, 640px)";;
+                el.style.transition="all 1s cubic-bezier(.2,.46,.85,.27)";
+                done();//调用afterEnter
+    },
+    ballAfterEnter(el){
+      this.showball=!this.showball;
+    },
+
   },
   components: {
     swiper,
