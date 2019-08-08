@@ -2,13 +2,9 @@
   <!-- 商品购买页面 -->
   <div>
     <!-- 小球动画 -->
-        <transition
-          @before-enter="ballBeforeEnter"
-          @enter="ballEnter"
-          @after-enter="ballAfterEnter"
-        >
-          <div class="ball" v-show="showball"></div>
-        </transition>
+    <transition @before-enter="ballBeforeEnter" @enter="ballEnter" @after-enter="ballAfterEnter">
+      <div class="ball" v-show="showball" ref="ball"></div>
+    </transition>
     <!--     <div class="mui-card">
       <div
         class="mui-card-header mui-card-media"
@@ -54,18 +50,8 @@
           市场价：
           <span class="market-price">{{goods.market_price}}</span>
         </div>
-        <div class="mui-numbox" data-numbox-min="0" data-numbox-step="1">
-          <!-- "-"按钮，点击可减小当前数值 -->
-          <button class="mui-btn mui-numbox-btn-minus" @click="count>0?count--:''">-</button>
-          <input class="mui-numbox-input" type="number" v-model="count" />
-          <!-- "+"按钮，点击可增大当前数值 -->
-          <button
-            class="mui-btn mui-numbox-btn-plus"
-            @click="count<goods.stock_quantity?count++:''"
-          >+</button>
-        </div>
-        <button class="mui-btn-primary" @click="showball=!showball">加入购物车</button>
-        
+        <numbox @setCount="setSelectedCount" :value="0"></numbox>
+        <button class="mui-btn-primary" @click="addtoCar">加入购物车</button>
       </div>
     </div>
 
@@ -120,7 +106,7 @@ h2 {
   width: 1rem;
   height: 1rem;
   position: absolute;
-  z-index:99;
+  z-index: 99;
 }
 </style>
 
@@ -129,14 +115,24 @@ import swiper from "../subcomponents/swiper.vue";
 import goodsinfo from "./goodsinfo.vue";
 import { Toast } from "mint-ui";
 import { Transform } from "stream";
+import numbox from "../subcomponents/buygoods_numbox.vue";
 export default {
   data() {
     return {
       id: this.$route.params.id,
-      goods: [],
+      goods: {
+        id: 87,
+        title: "华为（HUAWEI）荣耀6Plus 16G双4G版",
+        add_time: "2015-04-19T16:51:03.000Z",
+        goods_no: "SD9102356032",
+        stock_quantity: 60,
+        market_price: 2499,
+        sell_price: 2195
+      },
       count: 0,
       swipeList: [],
-      showball: false
+      showball: false,
+      selectedCount: 0
     };
   },
   created() {
@@ -173,23 +169,46 @@ export default {
     /* 小球动画  */
     ballBeforeEnter(el) {
       // ...
-        el.style.transform="translate(80px, 390px)";
+      el.style.transform = "translate(80px, 390px)";
     },
-    ballEnter(el,done) {
+    ballEnter(el, done) {
       // ...
-                el.offsetWidth;
-                el.style.transform= "translate(250px, 640px)";;
-                el.style.transition="all 1s cubic-bezier(.2,.46,.85,.27)";
-                done();//调用afterEnter
-    },
-    ballAfterEnter(el){
-      this.showball=!this.showball;
-    },
+      const ballPosition = this.$refs.ball.getBoundingClientRect(); //小球的位置
+      const badgePosition = document
+        .getElementById("badge")
+        .getBoundingClientRect(); //badge的位置
+      const xDist = badgePosition.left - ballPosition.left;
 
+      /* const yDist=ballPosition.bottom-badgePosition.bottom; */
+      const yDist = badgePosition.top - ballPosition.top;
+      console.log("y:" + yDist);
+      el.offsetWidth;
+      el.style.transform = `translate(${xDist}px,
+      ${yDist}px)`;
+      el.style.transition = "all 2s ease ";
+      done(); //调用afterEnter
+    },
+    ballAfterEnter(el) {
+      this.showball = !this.showball;
+    },
+    setSelectedCount(count) {
+      this.selectedCount = count;
+    },
+    addtoCar() {
+      //加入购物车
+      let goodsinfo = {
+        id: this.id,
+        count: this.selectedCount,
+        price: this.goods.sell_price,
+        selected: true
+      };
+      this.$store.commit("addtoCar", goodsinfo);
+    }
   },
   components: {
     swiper,
-    goodsinfo
+    goodsinfo,
+    numbox
   }
 };
 </script>

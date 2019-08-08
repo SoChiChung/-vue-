@@ -20,7 +20,7 @@
         <router-view></router-view>
       </transition>
     </div>
-    <!-- tabbar -->
+    <!-- tabbar 底部导航栏-->
     <nav class="mui-bar mui-bar-tab" fixed="true" v-if="!(this.$route.name=='newsinfo')">
       <router-link to="/first" class="mui-tab-item1">
         <span class="mui-icon mui-icon-home"></span>
@@ -31,7 +31,9 @@
         <span class="mui-tab-label">第二</span>
       </router-link>
       <router-link to="/third" class="mui-tab-item1">
-        <span class="mui-icon mui-icon-contact"></span>
+        <span class="mui-icon mui-icon-contact">
+          <span id="badge" class="mui-badge">{{this.$store.getters.getSumofcar}}</span>
+        </span>
         <span class="mui-tab-label">第三</span>
       </router-link>
       <router-link to="/fourth" class="mui-tab-item1">
@@ -59,6 +61,7 @@
         <span class="mui-tab-label">设置</span>
       </a>-->
     </nav>
+
     <nav class="mui-bar mui-bar-tab" fixed="true" v-if="(this.$route.name=='newsinfo')">
       <sendcomment :changepopupVisible="changepopupVisible"></sendcomment>
     </nav>
@@ -132,6 +135,9 @@
 <script>
 import sendcomment from "./subcomponents/sendcomment.vue";
 export default {
+  data() {
+    return {sum:0}
+  },
   methods: {
     changepopupVisible(v) {
       this.popupVisible = v;

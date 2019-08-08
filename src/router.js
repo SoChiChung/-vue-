@@ -2,7 +2,7 @@ import VueRouter from 'vue-router'
 /* 导入组件 */
 import first from './main/first.vue'
 import second from './main/second.vue'
-import third from './main/third.vue'
+import third from './shopcar/shopcar.vue'
 import fourth from './main/fourth.vue'
 import newslist from './main/newslist.vue'
 import news from './main/news.vue'
@@ -22,7 +22,7 @@ var router = new VueRouter({
         { path: "/second", name: "homepage", component: goodslist ,children:[
            /*  {path:"goodsinfo/:id",component:goodsinfo} */
         ]},
-        { path: "/third", name: "homepage", component: buygoods },
+        { path: "/third", name: "homepage", component: third },
         { path: "/fourth", name: "homepage", component: fourth },
         { path: "/newslist", name: "newslist", component: newslist },
         { path: "/news/:id", name: "newsinfo", component: news },

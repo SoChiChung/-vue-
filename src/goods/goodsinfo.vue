@@ -1,7 +1,7 @@
 <template>
   <div>
-      <h3>{{goods[0].title}}</h3>
-      <div v-html="goods[0].content"></div>
+    <h3>{{goods[0].title}}</h3>
+    <div v-html="goods[0].content"></div>
   </div>
 </template>
 <script>
@@ -9,13 +9,11 @@ export default {
   data() {
     return {
       id: this.$route.params.id,
-      goods: {
-
-      }
+      goods: [{ title: "", content: "" }]
     };
   },
-  created(){
-      this.getInfo()
+  created() {
+    this.getInfo();
   },
   methods: {
     getInfo() {
