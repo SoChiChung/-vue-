@@ -30,12 +30,13 @@ export default {
   },
   methods: {
     oncountChanged() {
-      this.$emit("setCount", parseInt(this.$refs.numberbox.value));
+      this.$emit("setCount", this.id,this.$refs.numberbox.value);
     }
   },
   mounted() {
     mui(".mui-numbox").numbox();
+
   },
-  props:["value"]
+  props:["value","id"]
 };
 </script>

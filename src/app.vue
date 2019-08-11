@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
     <mt-header fixed title="测试的header" ref="header">
-      <router-link to="/" slot="left">
+      <span @click="goback" slot="left">
         <mt-button icon="back">back</mt-button>
-      </router-link>
+      </span>
       <mt-button slot="right">分享</mt-button>
     </mt-header>
     <!-- header -->
@@ -141,6 +141,9 @@ export default {
   methods: {
     changepopupVisible(v) {
       this.popupVisible = v;
+    },
+    goback(){
+      this.$router.go(-1)
     }
   },
   components: {

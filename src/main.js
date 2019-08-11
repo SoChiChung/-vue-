@@ -60,19 +60,49 @@ var store = new Vuex.Store({
 
       state.car.some((item, index) => {
         if (item.id == id) { state.car.splice(index, 1); return true }
-
-
       });
     },
     change(state, id) {//改变商品的选中
       state.car.some((item, index) => {
         if (item.id == id) { item.selected = !item.selected; return true }
       })
+    }, 
+    changeStatus(state,payload) {//当购物车里面的count变化时 car同步发生变化 此时参数不能继续在后面加，后面的参数无效，传进去的参数为undefined；
+
+      let flag=state.car.some(item => {
+        if (item.id == payload.id) {
+          item.count = payload.count;
+          return true;
+        }
+      });
+     /*  console.log("flag:")
+      console.log(flag) */
     }
   }, getters: {
     getSumofcar(state) { return state.car.length },
     getCar(state) {
       return state.car;
+    },
+    getStatus(state) {//获取商品的购买数量 选中状态
+      var o = {}
+      state.car.forEach(item => {
+        let selected = item.selected;
+        let count = item.count;
+        o[item.id] = { 'selected': selected, 'count': count }
+      })
+      return o
+    },
+    getallPrice(state){//获取商品总价
+      let res={count:0,sum:0};
+      state.car.forEach(item=>{
+        if(item.selected)
+          {
+            res.sum+=(item.count*item.price);
+            res.count+=item.count
+          }
+      })
+      
+      return res
     }
   }
 })
